@@ -1,7 +1,7 @@
 [project]
-name = "Orion-MSP"
+name = "orion-msp"
 dynamic = ["version"]
-description = "ORION-MSP: Multi-Scale Sparse Attention for Tabular In-Context Learning"
+description = "Orion-MSP: Multi-Scale Sparse Attention for Tabular In-Context Learning"
 readme = "README.md"
 authors = [
     { name = "Mohamed Bouadi" },
