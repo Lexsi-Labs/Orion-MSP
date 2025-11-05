@@ -87,24 +87,20 @@ class OrionMSPClassifier(ClassifierMixin, BaseEstimator):
         Path to the pre-trained model checkpoint file.
         - If provided and the file exists, it's loaded directly.
         - If provided but the file doesn't exist and `allow_auto_download` is true, the version
-          specified by `checkpoint_version` is downloaded from Hugging Face Hub (repo: '....')
+          specified by `checkpoint_version` is downloaded from Hugging Face Hub (repo: 'Lexsi/Orion-MSP')
           to this path.
         - If `None` (default), the version specified by `checkpoint_version` is downloaded from
-          Hugging Face Hub (repo: '.....') and cached locally in the default
+          Hugging Face Hub (repo: 'Lexsi/Orion-MSP') and cached locally in the default
           Hugging Face cache directory (typically `~/.cache/huggingface/hub`).
 
     allow_auto_download: bool = True
         Whether to allow automatic download if the pretrained checkpoint cannot be found at the
         specified `model_path`.
 
-    checkpoint_version : str, default='orion-msp-classifier-v1.1.ckpt'
-        Specifies which version of the pre-trained model checkpoint to use when `model_path`
+    checkpoint_version : str, default='Orion-MSP-v1.0.ckpt'
+        Specifies the file name of the pre-trained model checkpoint to use when `model_path`
         is `None` or points to a non-existent file (and `allow_auto_download` is true).
-        Checkpoints are downloaded from '....'.
-        Available versions:
-        - 'orion-msp-classifier-v1.1.ckpt' (Default): The latest best-performing version.
-        - 'orion-msp-classifier-v1.0.ckpt': The version used in the original ORION-MSP paper.
-
+        
     device : Optional[str or torch.device], default=None
         Device to use for inference. If None, defaults to CUDA if available, else CPU.
         Can be specified as a string ('cuda', 'cpu') or a torch.device object.
@@ -170,7 +166,7 @@ class OrionMSPClassifier(ClassifierMixin, BaseEstimator):
         batch_size: Optional[int] = 8,
         model_path: Optional[str | Path] = None,
         allow_auto_download: bool = True,
-        checkpoint_version: str = "orion-msp-classifier-v1.1.ckpt",
+        checkpoint_version: str = "Orion-MSP-v1.0.ckpt",
         device: Optional[str | torch.device] = None,
         random_state: int | None = 42,
         n_jobs: Optional[int] = None,
@@ -224,25 +220,17 @@ class OrionMSPClassifier(ClassifierMixin, BaseEstimator):
             If a checkpoint cannot be found or downloaded based on the settings.
         """
 
-        repo_id = "..."
+        repo_id = "Lexsi/Orion-MSP"
         filename = self.checkpoint_version
+        ckpt = "Orion-MSP-v1.0.ckpt"
 
-        ckpt_v1 = "orion-msp-classifier-v1.0.ckpt"
-        ckpt_v1_1 = "orion-msp-classifier-v1.1.ckpt"
-
-        if filename == ckpt_v1:
+        if filename == ckpt:
             info_message = (
-                f"INFO: You are downloading '{ckpt_v1}', the version used in the original ORION-MSP paper.\n"
-                f"A newer version, '{ckpt_v1_1}', is available and offers improved performance.\n"
-            )
-        elif filename == ckpt_v1_1:
-            info_message = (
-                f"INFO: You are downloading '{ckpt_v1_1}', the latest best-performing version of ORION-MSP.\n"
-                f"To reproduce results from the original paper, please use '{ckpt_v1}'.\n"
+                f"INFO: You are downloading '{ckpt}', the version used in the original Orion-MSP paper.\n"
             )
         else:
             raise ValueError(
-                f"Invalid checkpoint version '{filename}'. Available ones are: '{ckpt_v1}', '{ckpt_v1_1}'."
+                f"Invalid checkpoint version '{filename}'. Available ones are: '{ckpt}'."
             )
 
         if self.model_path is None:
@@ -321,12 +309,6 @@ class OrionMSPClassifier(ClassifierMixin, BaseEstimator):
             If the number of classes exceeds the model's maximum supported classes
             and hierarchical classification is disabled.
         """
-
-        if OLD_SKLEARN:
-            # Workaround for compatibility with scikit-learn prior to v1.6
-            X, y = self._validate_data(X, y, dtype=None, cast_to_ndarray=False)
-        else:
-            X, y = self._validate_data(X, y, dtype=None, skip_check_array=True)
 
         check_classification_targets(y)
 
@@ -497,13 +479,6 @@ class OrionMSPClassifier(ClassifierMixin, BaseEstimator):
                 n_threads = max(1, mp.cpu_count() + 1 + self.n_jobs)
 
             torch.set_num_threads(n_threads)
-
-        # Preserve DataFrame structure to retain column names and types for correct feature transformation
-        if OLD_SKLEARN:
-            # Workaround for compatibility with scikit-learn prior to v1.6
-            X = self._validate_data(X, reset=False, dtype=None, cast_to_ndarray=False)
-        else:
-            X = self._validate_data(X, reset=False, dtype=None, skip_check_array=True)
 
         X = self.X_encoder_.transform(X)
 
