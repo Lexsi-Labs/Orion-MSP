@@ -1,0 +1,94 @@
+[project]
+name = "Orion-MSP"
+dynamic = ["version"]
+description = "ORION-MSP: Multi-Scale Sparse Attention for Tabular In-Context Learning"
+readme = "README.md"
+authors = [
+    { name = "Mohamed Bouadi" },
+    { name = "Pratinav Seth" },
+    { name = "Aditya Tanna" },
+    { name = "Vinay Kumar Sankarapu" },
+]
+license = { file = "LICENSE" }
+requires-python = ">=3.9,<3.13"
+keywords = ["tabular data", "foundation model", "Orion-MSP", "In-Context Learning","ICL"]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    'Programming Language :: Python :: 3',
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "torch>=2.2,<3",  # to enjoy Flash Attention v2
+    "scikit-learn>=1.3.0,<1.7",
+    "numpy",
+    "scipy",
+    "joblib",
+    "xgboost",
+    "transformers",
+    "einops>=0.7",
+    "psutil",
+    "wandb",
+    "tqdm>=4.64.0",
+    "huggingface-hub",
+]
+
+[build-system]
+requires = ["hatchling>=1.26.1"] 
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/orion_msp/__about__.py"
+
+[project.urls]
+Documentation = "hhttps://github.com/Lexsi-Labs/Orion-MSP#README"
+Issues = "https://github.com/Lexsi-Labs/Orion-MSP/issues"
+Source = "https://github.com/Lexsi-Labs/Orion-MSP"
+Homepage = "https://www.lexsi.ai/"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src/orion_msp", "LICENSE", "README.md", "figures"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/orion_msp"]
+
+[tool.hatch.envs.default]
+installer = "uv"
+features = []
+
+[tool.hatch.envs.hatch-test]
+default-args = [""]
+installer = "uv"
+features = []
+
+[tool.pytest.ini_options]
+pythonpath = "src"  # to allow importing orion_msp instead of src.orion_msp
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+    "mypy>=1.0.0",
+]
+
+[tool.coverage.run]
+source = ["src"]
+branch = true
+parallel = true
+omit = [
+    "src/orion_msp/__about__.py",
+]
+
+[tool.coverage.paths]
+orion_msp = ["src"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
