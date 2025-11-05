@@ -21,7 +21,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.2+-orange.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Orion-MSP** is a tabular foundation model that combines **multi-scale sparse attention** with **Perceiver-style memory** for efficient in-context learning on tabular data. The model processes features at multiple resolutions simultaneously, capturing both local feature interactions and global dataset-level patterns through hierarchical attention mechanisms.
+**[Orion-MSP](https://arxiv.org/abs/2511.02818)** is a tabular foundation model that combines **multi-scale sparse attention** with **Perceiver-style memory** for efficient in-context learning on tabular data. The model processes features at multiple resolutions simultaneously, capturing both local feature interactions and global dataset-level patterns through hierarchical attention mechanisms.
 
 ## Approach and Architecture
 
@@ -227,142 +227,142 @@ The preprocessing is automatically applied during `fit()` and `predict()`, so no
 
 Orion-MSP is the most consistent top performer across all benchmarks, achieving the best overall rank.
 
-<!-- Orion-MSP: Benchmark Summary Table -->
-<style>
-  /* Container adds horizontal scroll on small screens */
-  .hf-table-wrap { overflow-x: auto; margin: 1rem 0; }
-  table.bench { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
-  table.bench caption { font-weight: 600; text-align: left; margin-bottom: .5rem; }
-  table.bench th, table.bench td { border-bottom: 1px solid #e5e7eb; padding: 6px 8px; }
-  table.bench thead th { border-bottom: 2px solid #d1d5db; background: #fafafa; }
-  table.bench th.sticky { position: sticky; top: 0; z-index: 1; }
-  /* Alignment */
-  table.bench th, table.bench td { text-align: center; }
-  table.bench th:first-child, table.bench td:first-child { text-align: left; white-space: nowrap; }
-  /* Emphasis helpers */
-  .first { font-weight: 700; }                 /* 1st place (bold) */
-  .second { text-decoration: underline; }      /* 2nd place (underline) */
-  .first.second { font-weight: 700; text-decoration: underline; } /* bold+underline */
-</style>
+<div align="center">
 
-<div class="hf-table-wrap">
-  <table class="bench">
-    <caption>Performance comparison across three benchmark suites—TALENT, OpenML-CC18, and TabZilla. Ranks are mean ranks (lower is better). Metrics: ACC = Accuracy, F1 = Weighted F1. <span class="first">1st</span>; <span class="second">2nd</span>.</caption>
-    <thead>
-      <tr>
-        <th class="sticky" rowspan="2">Models</th>
-        <th class="sticky" colspan="1">All</th>
-        <th class="sticky" colspan="3">TALENT</th>
-        <th class="sticky" colspan="3">OpenML-CC18</th>
-        <th class="sticky" colspan="3">TabZilla</th>
-      </tr>
-      <tr>
-        <th class="sticky">Rank</th>
-        <th class="sticky">Rank</th><th class="sticky">ACC</th><th class="sticky">F1</th>
-        <th class="sticky">Rank</th><th class="sticky">ACC</th><th class="sticky">F1</th>
-        <th class="sticky">Rank</th><th class="sticky">ACC</th><th class="sticky">F1</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>XGBoost</td>
-        <td>6.70</td>
-        <td>6.02</td><td>0.8403</td><td>0.8360</td>
-        <td>5.89</td><td>0.8558</td><td>0.8537</td>
-        <td>6.07</td><td>0.8612</td><td>0.8326</td>
-      </tr>
-      <tr>
-        <td>CatBoost</td>
-        <td>6.43</td>
-        <td>5.57</td><td>0.8336</td><td>0.8259</td>
-        <td>6.25</td><td>0.8588</td><td>0.8520</td>
-        <td>7.13</td><td>0.8579</td><td>0.8384</td>
-      </tr>
-      <tr>
-        <td>Random Forest</td>
-        <td>7.38</td>
-        <td>6.15</td><td>0.8285</td><td>0.8209</td>
-        <td>6.36</td><td>0.8547</td><td>0.8497</td>
-        <td>8.42</td><td>0.8358</td><td>0.8399</td>
-      </tr>
-      <tr>
-        <td>LightGBM</td>
-        <td>6.78</td>
-        <td>6.11</td><td>0.8331</td><td>0.8245</td>
-        <td>6.18</td><td>0.8581</td><td>0.8493</td>
-        <td>5.25</td><td>0.8618</td><td>0.8211</td>
-      </tr>
-      <tr>
-        <td>TabICL</td>
-        <td>4.96</td>
-        <td>4.09</td><td class="second">0.8471</td><td class="second">0.8379</td>
-        <td>4.69</td><td>0.8667</td><td>0.8623</td>
-        <td>5.89</td><td>0.8734</td><td>0.8698</td>
-      </tr>
-      <tr>
-        <td>OrionBiX</td>
-        <td>5.37</td>
-        <td>4.59</td><td>0.8346</td><td>0.8260</td>
-        <td>4.98</td><td>0.8653</td><td>0.8596</td>
-        <td>4.89</td><td>0.8728</td><td>0.8628</td>
-      </tr>
-      <tr>
-        <td><span class="first second">OrionMSP</span></td>
-        <td>3.58</td>
-        <td class="first second">3.26</td><td>0.8461</td><td>0.8360</td>
-        <td class="first second">4.12</td><td class="first second">0.8722</td><td class="first second">0.8676</td>
-        <td class="first second">3.84</td><td class="first second">0.8821</td><td class="first second">0.8786</td>
-      </tr>
-      <tr>
-        <td><span class="second">TabPFN</span></td>
-        <td>4.61</td>
-        <td class="second">3.72</td><td class="first second">0.8514</td><td class="first second">0.8412</td>
-        <td>4.76</td><td class="second">0.8714</td><td class="second">0.8663</td>
-        <td>4.86</td><td>0.8752</td><td>0.8716</td>
-      </tr>
-      <tr>
-        <td>Mitra</td>
-        <td>11.77</td>
-        <td>10.38</td><td>0.3921</td><td>0.2868</td>
-        <td>10.52</td><td>0.3614</td><td>0.2522</td>
-        <td>11.21</td><td>0.3152</td><td>0.1830</td>
-      </tr>
-      <tr>
-        <td>ContextTab</td>
-        <td>9.70</td>
-        <td>9.84</td><td>0.5474</td><td>0.4596</td>
-        <td>6.28</td><td>0.8639</td><td>0.8581</td>
-        <td>7.13</td><td>0.8389</td><td>0.8334</td>
-      </tr>
-      <tr>
-        <td>TabDPT</td>
-        <td>5.42</td>
-        <td>5.19</td><td>0.8408</td><td>0.8318</td>
-        <td class="second">4.64</td><td>0.8672</td><td>0.8625</td>
-        <td class="second">3.94</td><td class="second">0.8814</td><td class="second">0.8775</td>
-      </tr>
-    </tbody>
-  </table>
+<table>
+<caption><strong>Performance comparison across three benchmark suites—TALENT, OpenML-CC18, and TabZilla.</strong> Rank is accuracy-based ranking (lower is better). Metrics: ACC = Accuracy, F1 = Weighted F1.</caption>
+<thead>
+<tr>
+<th rowspan="2" style="text-align: left; padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Models</th>
+<th colspan="1" style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">All</th>
+<th colspan="3" style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">TALENT</th>
+<th colspan="3" style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">OpenML-CC18</th>
+<th colspan="3" style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">TabZilla</th>
+</tr>
+<tr>
+<th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Rank</th>
+<th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Rank</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">ACC</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">F1</th>
+<th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Rank</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">ACC</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">F1</th>
+<th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">Rank</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">ACC</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9;">F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">XGBoost</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.70</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.02</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8403</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8360</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.89</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8558</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8537</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.07</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8612</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8326</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">CatBoost</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.43</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.57</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8336</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8259</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.25</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8588</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8520</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">7.13</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8579</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8384</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">Random Forest</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">7.38</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.15</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8285</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8209</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.36</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8547</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8497</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">8.42</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8358</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8399</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">LightGBM</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.78</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.11</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8331</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8245</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.18</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8581</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8493</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.25</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8618</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8211</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">TabICL</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.96</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.09</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">0.8471</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">0.8379</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.69</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8667</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8623</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.89</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8734</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8698</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">OrionBiX</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.37</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.59</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8346</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8260</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.98</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8653</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8596</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.89</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8728</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8628</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;"><strong>OrionMSP</strong></td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;"><strong>3.58</strong></td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>3.26</strong></td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8461</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8360</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>4.12</strong></td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>0.8722</strong></td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>0.8676</strong></td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>3.84</strong></td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>0.8821</strong></td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>0.8786</strong></td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;"><u>TabPFN</u></td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">4.61</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">3.72</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>0.8514</strong></td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; font-weight: bold; text-decoration: underline;"><strong>0.8412</strong></td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.76</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">0.8714</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">0.8663</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">4.86</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8752</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8716</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">Mitra</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">11.77</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">10.38</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.3921</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.2868</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">10.52</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.3614</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.2522</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">11.21</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.3152</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.1830</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">ContextTab</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">9.70</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">9.84</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.5474</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.4596</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">6.28</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8639</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8581</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">7.13</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8389</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8334</td>
+</tr>
+<tr>
+<td style="text-align: left; padding: 6px 8px; border: 1px solid #ddd;">TabDPT</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.42</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">5.19</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8408</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8318</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">4.64</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8672</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd;">0.8625</td>
+<td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">3.94</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">0.8814</td><td style="text-align: center; padding: 6px 8px; border: 1px solid #ddd; text-decoration: underline;">0.8775</td>
+</tr>
+</tbody>
+</table>
+
 </div>
 
 ### Performance Plots
 
 <div align="center">
-  <img src="figures/accuracy_ranking_talent.png" alt="Accuracy Ranking TALENT" width="600"/>
+  <img src="figures/accuracy_ranking_talent.png" alt="Accuracy Ranking TALENT" width="700"/>
 </div>
 
 <div align="center">
-  <img src="figures/accuracy_ranking_tabzilla.png" alt="Accuracy Ranking TabZilla" width="600"/>
+  <img src="figures/accuracy_ranking_tabzilla.png" alt="Accuracy Ranking TabZilla" width="700"/>
 </div>
 
 <div align="center">
-  <img src="figures/accuracy_ranking_openml-cc18.png" alt="Accuracy Ranking OPENML-CC18" width="600"/>
+  <img src="figures/accuracy_ranking_openml-cc18.png" alt="Accuracy Ranking OPENML-CC18" width="700"/>
 </div>
 
+<div align="center">
+  <table>
+    <tr>
+      <td style="padding: 5px;"><img src="figures/relative_acc_improvement_over_talent.png" alt="Relative Improvement over XGBoost on TALENT" width="600"/></td>
+      <td style="padding: 5px;"><img src="figures/relative_acc_improvement_over_tabzilla.png" alt="Relative Improvement over XGBoost on TabZilla" width="600"/></td>
+    </tr>
+  </table>
+</div>
+
+<div align="center">
+  <table>
+    <tr>
+      <td style="padding: 3px;"><img src="figures/relative_acc_improvement_over_talent.png" alt="Relative Improvement over XGBoost on TALENT" width="500"/></td>
+    </tr>
+  </table>
+</div>
 
 ## Citation
 
-If you use Orion-MSP in your research, please cite our [paper](https://your-paper-url-here):
+If you use Orion-MSP in your research, please cite our [paper](https://arxiv.org/abs/2511.02818):
 
 ```bibtex
 @article{bouadi25orionmsp,
@@ -384,5 +384,5 @@ This project is released under the MIT License. See [LICENSE](LICENSE) for detai
 
 For questions, issues, or contributions, please:
 - Open an issue on [GitHub](https://github.com/Lexsi-Labs/Orion-MSP/issues)
-- - Join our [Discord](https://discord.gg/dSB62Q7A) community
+- Join our [Discord](https://discord.gg/dSB62Q7A) community
 
