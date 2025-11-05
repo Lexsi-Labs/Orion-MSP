@@ -11,14 +11,14 @@ authors = [
 ]
 license = { file = "LICENSE" }
 requires-python = ">=3.9,<3.13"
-keywords = ["tabular data", "foundation model", "Orion-MSP", "In-Context Learning","ICL"]
+keywords = ["tabular data", "foundation model", "Orion-MSP", "In-Context Learning", "ICL"]
 classifiers = [
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
     "Topic :: Scientific/Engineering",
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
-    'Programming Language :: Python :: 3',
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -40,14 +40,14 @@ dependencies = [
 ]
 
 [build-system]
-requires = ["hatchling>=1.26.1"] 
+requires = ["hatchling>=1.26.1"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
 path = "src/orion_msp/__about__.py"
 
 [project.urls]
-Documentation = "hhttps://github.com/Lexsi-Labs/Orion-MSP#README"
+Documentation = "https://github.com/Lexsi-Labs/Orion-MSP#README"
 Issues = "https://github.com/Lexsi-Labs/Orion-MSP/issues"
 Source = "https://github.com/Lexsi-Labs/Orion-MSP"
 Homepage = "https://www.lexsi.ai/"
